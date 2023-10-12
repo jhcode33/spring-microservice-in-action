@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.5</version>
+		<version>3.1.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.optimagrowth</groupId>
@@ -19,7 +19,7 @@
 		<docker.image.prefix>jhcode33</docker.image.prefix>
 		<!-- 아래 링크에서 스프링 부트와 스프링 클라우드의 버전 호환을 확인해야 한다 -->
 		<!-- https://spring.io/projects/spring-cloud -->
-		<spring-cloud.version>2022.0.1</spring-cloud.version>
+		<spring-cloud.version>2022.0.3</spring-cloud.version>
 	</properties>
 
 	<dependencies>
