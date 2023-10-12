@@ -1,0 +1,15 @@
+spring:
+    application:
+     name: licensing-service 
+    profiles:
+      active: dev
+    config:
+      import: optional:configserver:http://configserver:8071
+
+
+#    cloud:
+#        config:
+#            uri: http://configserver:8071
+
+    main:
+      allow-bean-definition-overriding: true
