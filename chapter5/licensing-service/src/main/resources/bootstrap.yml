@@ -6,7 +6,6 @@ spring:
   cloud:
     config:
       uri: http://configserver:8071
-      name: licensing-service-dev
 
   main:
     allow-bean-definition-overriding: true
