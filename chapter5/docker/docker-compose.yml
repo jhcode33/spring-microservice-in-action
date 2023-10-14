@@ -26,6 +26,7 @@ services:
        - "8071:8071"
     environment:
       ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
+      VAULT_HOST: "host.docker.internal"
     networks:
       backend:
         aliases:
