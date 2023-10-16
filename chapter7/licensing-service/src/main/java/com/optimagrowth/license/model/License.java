@@ -1,11 +1,6 @@
 package com.optimagrowth.license.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -4,7 +4,7 @@
 
   <groupId>com.optimagrowth</groupId>
   <version>0.0.1-SNAPSHOT</version>
-  <artifactId>ostock-parent-pom</artifactId>
+  <artifactId>jhcode33-parent-pom</artifactId>
   <packaging>pom</packaging>
 
 
@@ -14,12 +14,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.3.RELEASE</version>
+        <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
-	 <docker.image.prefix>ostock</docker.image.prefix>
+	 <docker.image.prefix>jhcode33</docker.image.prefix>
 	</properties>
 
   <modules>
