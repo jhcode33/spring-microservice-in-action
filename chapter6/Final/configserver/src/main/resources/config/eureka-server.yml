@@ -6,22 +6,20 @@ spring:
       context-path: /admin
 server:
   port: 8070
+
 eureka:
   instance:
-    preferIpAddress: true
     hostname: eurekaserver
   client:
-    registerWithEureka: true
-    fetchRegistry: true
+    registerWithEureka: false
+    fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 5
-      
-      
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-   
