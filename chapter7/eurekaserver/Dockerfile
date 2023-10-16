@@ -6,7 +6,7 @@ FROM openjdk:17 as build
 LABEL maintainer="Illary Huaylupo <illaryhs@gmail.com>"
 
 # The application's jar file
-ARG JAR_FILE=target/eurekaserver-0.0.1-SNAPSHOP
+ARG JAR_FILE=target/eurekaserver-0.0.1-SNAPSHOP.jar
 
 # Add the application's jar to the container
 COPY ${JAR_FILE} app.jar

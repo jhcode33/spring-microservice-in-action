@@ -18,7 +18,7 @@
 		<java.version>17</java.version>
 		<docker.image.prefix>jhcode33</docker.image.prefix>
 		<spring-cloud.version>2022.0.3</spring-cloud.version>
-		<resilience4j.version>1.5.0</resilience4j.version>
+<!--		<resilience4j.version>1.5.0</resilience4j.version>-->
 	</properties>
 
 	<dependencies>
@@ -88,18 +88,18 @@
 		<dependency>
 		    <groupId>io.github.resilience4j</groupId>
 		    <artifactId>resilience4j-spring-boot2</artifactId>
-		    <version>${resilience4j.version}</version>
+<!--		    <version>${resilience4j.version}</version>-->
 		</dependency>
 		
 		<dependency>
 		    <groupId>io.github.resilience4j</groupId>
 		    <artifactId>resilience4j-circuitbreaker</artifactId>
-		    <version>${resilience4j.version}</version>
+<!--		    <version>${resilience4j.version}</version>-->
 		</dependency>
 		<dependency>
 		    <groupId>io.github.resilience4j</groupId>
 		    <artifactId>resilience4j-timelimiter</artifactId>
-		    <version>${resilience4j.version}</version>
+<!--		    <version>${resilience4j.version}</version>-->
 		</dependency>
 		 <dependency>
             <groupId>org.springframework.boot</groupId>
