@@ -22,7 +22,7 @@ spring:
           scheme: http
           kvVersion: 2
           profile-separator: /
-          backend: licensing-service
+#          backend: licensing-service
 
 server:
   port: 8071

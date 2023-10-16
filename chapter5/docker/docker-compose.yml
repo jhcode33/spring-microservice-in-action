@@ -1,5 +1,26 @@
 version: '2.1'
 services:
+
+  vault:
+    image: vault:1.13.3
+    container_name: vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "myroot"
+#      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8201"
+    networks:
+      backend:
+        aliases:
+          - "vault"
+    volumes:
+      - ./vault/config:/vault/config
+      - ./vault/file:/vault/data
+      - ./vault/vault-init.sh:/vault/vault-init.sh
+    cap_add:
+      - IPC_LOCK
+    command: ["sh", "/vault/vault-init.sh"]
+
   database:
     image: postgres:latest
     ports:
@@ -20,17 +41,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   configserver:
     image: jhcode33/configserver:0.0.1-SNAPSHOT
     ports:
        - "8071:8071"
     environment:
       ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
-      VAULT_HOST: "host.docker.internal"
+#      VAULT_HOST: "host.docker.internal"
+      VAULT_HOST: "vault"
     networks:
       backend:
         aliases:
           - "configserver"
+
   licensingservice:
     image: jhcode33/licensing-service:0.0.2-SNAPSHOT
     environment:

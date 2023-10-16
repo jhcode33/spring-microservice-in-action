@@ -1,0 +1,93 @@
+{
+  "example.property": "I AM THE DEFAULT",
+  "logstash.host": "3.136.161.26:5000",
+  "logging.config": "classpath:logback-delayed.xml",
+  "spring": {
+    "jpa": {
+      "hibernate": {
+        "ddl-auto": "none",
+        "naming-strategy": "org.hibernate.cfg.ImprovedNamingStrategy",
+        "properties": {
+          "hibernate.dialect": "org.hibernate.dialect.PostgreSQLDialect"
+        }
+      },
+      "database": "POSTGRESQL",
+      "show-sql": "true"
+    },
+    "database": {
+      "driverClassName": "org.postgresql.Driver"
+    },
+    "datasource": {
+      "platform": "postgres",
+      "testWhileIdle": "true",
+      "validationQuery": "SELECT 1"
+    },
+    "cloud": {
+      "loadbalancer": {
+        "ribbon": {
+          "enabled": "false"
+        }
+      }
+    },
+    "stream": {
+      "bindings": {
+        "inboundOrgChanges": {
+          "destination": "orgChangeTopic",
+          "content-type": "application/json",
+          "group": "licensingGroup"
+        }
+      },
+      "kafka": {
+        "binder": {
+          "zkNodes": "kafka",
+          "brokers": "kafka"
+        }
+      }
+    },
+    "zipkin": {
+      "baseUrl": "http://zipkin:9411"
+    },
+    "sleuth": {
+      "sampler": {
+        "percentage": "1"
+      }
+    }
+  },
+  "management": {
+    "endpoints": {
+      "web": {
+        "exposure": {
+          "include": "*"
+        }
+      }
+    },
+    "enabled-by-default": "true"
+  },
+  "eureka": {
+    "instance": {
+      "preferIpAddress": "true"
+    },
+    "client": {
+      "registerWithEureka": "true",
+      "fetchRegistry": "true",
+      "serviceUrl": {
+        "defaultZone": "http://eurekaserver:8070/eureka/"
+      }
+    }
+  },
+  "security": {
+    "oauth2": {
+      "resource": {
+        "userInfoUri": "http://authenticationservice:8082/user"
+      },
+      "client": {
+        "grant-type": "client_credentials"
+      },
+      "signing.key": "345345fsdfsf5345"
+    }
+  },
+  "redis": {
+    "server": "ostock-redis.ymengq.0001.use1.cache.amazonaws.com",
+    "port": "6379"
+  }
+}

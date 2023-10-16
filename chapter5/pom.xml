@@ -7,7 +7,6 @@
   <artifactId>ostock-parent-pom</artifactId>
   <packaging>pom</packaging>
 
-
   <name>optimagrowth-parent-pom</name>
   <description>Parent Pom for the optimagrowth project</description>
 
@@ -26,6 +25,7 @@
     <module>configserver</module>
     <module>licensing-service</module>
   </modules>
+
   <build>
     <plugins>
       <plugin>
