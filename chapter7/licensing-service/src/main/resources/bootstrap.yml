@@ -4,8 +4,9 @@ spring:
     profiles:
       active: dev
     cloud:
-        config: 
-            uri: http://configserver:8071
+        config:
+          uri: http://configserver:8071
+          name: licensing-service
     main:
       allow-bean-definition-overriding: true
 
@@ -14,26 +15,6 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.optimagrowth: DEBUG
-
-#auditevents  , Exposes audit events information for the current application.
-#beans  , Displays a complete list of all the Spring beans in your application.
-#caches , Exposes available caches.
-#conditions , Shows the conditions that were evaluated on configuration and auto-configuration classes and the reasons why they did or did not match.
-#configprops  , Displays a collated list of all\u00A0@ConfigurationProperties.
-#env  , Exposes properties from Spring\u2019s\u00A0ConfigurableEnvironment.
-#flyway , Shows any Flyway database migrations that have been applied.
-#health , Shows application health information.
-#httptrace  , Displays HTTP trace information (by default, the last 100 HTTP request-response exchanges).
-#info , Displays arbitrary application info.
-#integrationgraph , Shows the Spring Integration graph.
-#loggers  , Shows and modifies the configuration of loggers in the application.
-#liquibase  , Shows any Liquibase database migrations that have been applied.
-#metrics  , Shows \u2018metrics\u2019 information for the current application.
-#mappings , Displays a collated list of all\u00A0@RequestMapping\u00A0paths.
-#scheduledtasks , Displays the scheduled tasks in your application.
-#sessions , Allows retrieval and deletion of user sessions from a Spring Session-backed session store. Not available when using Spring Session\u2019s support for reactive web applications.
-#shutdown , Lets the application be gracefully shutdown.
-#threaddump , Performs a thread dump.
 
 #management.endpoints.web.base-path=/
 management.endpoints.enabled-by-default: false
@@ -45,12 +26,13 @@ management.endpoint.health:
 resilience4j.circuitbreaker:
   instances:
     licenseService:
-      registerHealthIndicator: true
-
-      ringBufferSizeInClosedState: 5
-      ringBufferSizeInHalfOpenState: 3
-      waitDurationInOpenState: 10s
-      failureRateThreshold: 50
+      registerHealthIndicator: true       # 상태 정보 엔드포인트에 대한 구성 정보 노출 여부
+#     ringBufferSizeInClosedState: 5    => deprecated
+      sliding-window-size: 5              # 링 버퍼의 닫힌 상태 크기
+#     ringBufferSizeInHalfOpenState: 3  => deprecated
+      permitted-number-of-calls-in-half-open-state: 3
+      waitDurationInOpenState: 10s        # 링 버퍼의 반열린 상태 크기
+      failureRateThreshold: 50            # 열린 상태의 대기 시간
       recordExceptions:
         - org.springframework.web.client.HttpServerErrorException
         - java.io.IOException
@@ -59,10 +41,12 @@ resilience4j.circuitbreaker:
 
     organizationService:
       registerHealthIndicator: true
-      ringBufferSizeInClosedState: 6
-      ringBufferSizeInHalfOpenState: 4
+#      ringBufferSizeInClosedState: 6
+      sliding-window-size: 6
+#      ringBufferSizeInHalfOpenState: 4
+      permitted-number-of-calls-in-half-open-state: 4
       waitDurationInOpenState: 20s
-      failureRateThreshold: 60
+      failureRateThreshold: 60           # 실패율 임계치 ( % )
 
 resilience4j.ratelimiter:
   instances:
@@ -74,7 +58,8 @@ resilience4j.ratelimiter:
 resilience4j.retry:
   instances:
     retryLicenseService:
-      maxRetryAttempts: 5
+#      maxRetryAttempts: 5 => deprecated
+      max-attempts: 5
       waitDuration: 10000
       retry-exceptions:
         - java.util.concurrent.TimeoutException
@@ -82,13 +67,12 @@ resilience4j.retry:
 resilience4j.bulkhead:
   instances:
     bulkheadLicenseService:
-      maxWaitDuration: 2ms
-      maxConcurrentCalls: 20
-
+      maxWaitDuration: 2ms    # 스레드를 차단할 최대 시간
+      maxConcurrentCalls: 20  # 최대 동시 호출 수
 
 resilience4j.thread-pool-bulkhead:
   instances:
     bulkheadLicenseService:
-      maxThreadPoolSize: 1
-      coreThreadPoolSize: 1
-      queueCapacity: 1
+      maxThreadPoolSize: 1   # 스레드 풀에서 최대 스레드 수
+      coreThreadPoolSize: 1  # 코어 스레드 풀 크기
+      queueCapacity: 1       # 큐 용량
