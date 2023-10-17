@@ -5,8 +5,7 @@ package com.optimagrowth.license.controller;
 
 import static java.util.Collections.singletonMap;
 
-import javax.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,7 +41,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
      */
 	@ExceptionHandler(value = { Exception.class })
     public @ResponseBody ResponseEntity<ResponseWrapper> handleException(HttpServletRequest request,
-            ResponseWrapper responseWrapper){
+																		 ResponseWrapper responseWrapper){
     	
         return ResponseEntity.ok(responseWrapper);
     }
