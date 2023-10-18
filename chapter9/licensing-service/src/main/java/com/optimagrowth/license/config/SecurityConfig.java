@@ -16,26 +16,43 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
 	@Autowired
 	public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		super.configure(http);
-		http.authorizeRequests()
-		.anyRequest().authenticated();
-		http.csrf().disable();
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.build();
 	}
+
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		super.configure(http);
+//		http.authorizeRequests()
+//		.anyRequest().authenticated();
+//		http.csrf().disable();
+//	}
+
+//	@Bean
+//	@Override
+//	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+//		return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+//	}
+
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,11 +61,6 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 		auth.authenticationProvider(keycloakAuthenticationProvider);
 	}
 
-	@Bean
-	@Override
-	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-		return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-	}
 
 	@Bean
 	public KeycloakConfigResolver KeycloakConfigResolver() {

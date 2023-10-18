@@ -20,8 +20,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   configserver:
-    image: ostock/configserver:0.0.1-SNAPSHOT
+    image: jhcode33/configserver:0.0.1-SNAPSHOT
     ports:
        - "8071:8071"
     environment:
@@ -30,8 +31,9 @@ services:
       backend:
         aliases:
           - "configserver"
+
   eurekaserver:
-    image: ostock/eurekaserver:0.0.1-SNAPSHOT
+    image: jhcode33/eurekaserver:0.0.1-SNAPSHOT
     ports:
       - "8070:8070"
     depends_on:
@@ -43,8 +45,9 @@ services:
       backend:
         aliases:
           - "eurekaserver"
+
   gatewayserver:
-    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    image: jhcode33/gatewayserver:0.0.1-SNAPSHOT
     ports:
       - "8072:8072"
     environment:
@@ -65,8 +68,9 @@ services:
       backend:
         aliases:
           - "gateway"
+
   licensingservice:
-    image: ostock/licensing-service:0.0.3-SNAPSHOT
+    image: jhcode33/licensing-service:0.0.3-SNAPSHOT
     environment:
       PROFILE: "dev"
       CONFIGSERVER_URI: "http://configserver:8071"
@@ -82,8 +86,9 @@ services:
       - "8180:8080"
     networks:
       - backend
+
   organizationservice:
-    image: ostock/organization-service:0.0.1-SNAPSHOT
+    image: jhcode33/organization-service:0.0.1-SNAPSHOT
     environment:
       PROFILE: "dev"
       CONFIGSERVER_URI: "http://configserver:8071"
@@ -101,7 +106,8 @@ services:
       - backend
 
   keycloak:
-    image: alemairebe/keycloak:14.0.0
+    image: jboss/keycloak:latest
+    na
     restart: always
     environment:
       KEYCLOAK_VERSION: 6.0.1
