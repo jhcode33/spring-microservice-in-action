@@ -7,12 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.optimagrowth.license.model.Organization;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 public class OrganizationRestTemplateClient {
     
+    //@Autowired
+    //private KeycloakRestTemplate restTemplate;
+
     @Autowired
-    private KeycloakRestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     public Organization getOrganization(String organizationId){
         ResponseEntity<Organization> restExchange = 

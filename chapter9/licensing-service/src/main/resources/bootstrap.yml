@@ -6,9 +6,20 @@ spring:
   cloud:
     config:
       uri: http://configserver:8071
-      name: licensing-service
   main:
     allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/spmia-realm
+          jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      resource-id: ostock
+      principal-attribute: preferred_username
 
 logging:
   level:
@@ -76,3 +87,6 @@ resilience4j.thread-pool-bulkhead:
       maxThreadPoolSize: 1   # 스레드 풀에서 최대 스레드 수
       coreThreadPoolSize: 1  # 코어 스레드 풀 크기
       queueCapacity: 1       # 큐 용량
+
+server:
+  port: 8180

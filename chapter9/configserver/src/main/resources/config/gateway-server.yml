@@ -1,12 +1,11 @@
 server:
   port: 8072
-  
+
 logstash.host: 3.136.161.26:5000
- 
-logging: 
+
+logging:
   config: classpath:logback-delayed.xml
-  
- 
+
 eureka:
   instance:
     preferIpAddress: true
@@ -15,7 +14,7 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://eurekaserver:8070/eureka/
-      
+
 spring:
   zipkin:
     baseUrl: http://zipkin:9411
@@ -25,23 +24,27 @@ spring:
   cloud:
     loadbalancer.ribbon.enabled: false
     gateway:
-        routes:
+      discovery.locator:
+        enabled: true
+        lowerCaseServiceId: true
+      routes:
         - id: organization-service
           uri: lb://organization-service
           predicates:
-          - Path=/organization/**
+            - Path=/organization/**
           filters:
-          - RewritePath=/organization/(?<path>.*), /$\{path}
-          - RemoveRequestHeader= Cookie,Set-Cookie
+            - RewritePath=/organization/(?<path>.*), /$\{path}
+            - RemoveRequestHeader=Cookie
+            - RemoveRequestHeader=Set-Cookie
         - id: licensing-service
           uri: lb://licensing-service
           predicates:
-          - Path=/license/**
+            - Path=/license/**
           filters:
-          - RewritePath=/license/(?<path>.*), /$\{path}
-          - RemoveRequestHeader= Cookie,Set-Cookie
-   
-    
+            - RewritePath=/license/(?<path>.*), /$\{path}
+            - RemoveRequestHeader=Cookie
+            - RemoveRequestHeader=Set-Cookie
+
 management:
   endpoints:
     web:
@@ -52,7 +55,3 @@ management:
   endpoint:
     gateway:
       enabled: true
-
-        
-        
-        
