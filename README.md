@@ -12,6 +12,8 @@ Spring Microservice In Action [Spring boot 3.1.5]
 - **Period of work**: 2023.12.05 ~ Currently in progress
 - **Origin Source**: [https://github.com/ihuaylupo/manning-smia](https://github.com/ihuaylupo/manning-smia)
 
+<br>
+
 # Introduction
 
 안녕하세요. 한국의 백엔드 개발자입니다. 
@@ -39,26 +41,29 @@ This material is for educational purposes only.
     [Maven](https://maven.apache.org/), 
     [Java 17](https://www.oracle.com/kr/java/technologies/downloads/#java17).
 
+<br>
 
-### 1. Check Your Java Version
-> #### Java 버전 확인
+## 1. Check Your Java Version
+> ### Java 버전 확인
 > ```bash
 > $ java -version
 > ```
-> **Check your java version is 17**
+> #### Check your java version is 17
 > ![java_version](https://github.com/jhcode33/spring-microservice-in-action/assets/125725072/e3152684-e912-4205-99e6-851300122a45)
 
-### 2. Git fork and Git Clone
-> #### Step 1: git fork
+<br>
+
+## 2. Git fork and Git Clone
+> ### Step 1: git fork
 > ![git_fork](https://github.com/jhcode33/spring-microservice-in-action/assets/125725072/3b53219b-f7d8-4531-9b13-f6ef4c049d21)
 >
-> #### Step 2: git fork create your repository
+> ### Step 2: git fork create your repository
 > ![git_fork_2](https://github.com/jhcode33/spring-microservice-in-action/assets/125725072/699be232-a128-490d-ade2-93699eb8356b)
 > 
-> #### Step 3: git copy [ your-fork-repository-url ]
+> ### Step 3: git copy [ your-fork-repository-url ]
 > ![git_fork_3](https://github.com/jhcode33/spring-microservice-in-action/assets/125725072/ffa4bd58-c395-4fdc-8d02-63d16c744e7e)
 >
-> #### Step 4: git clone in your local workspace
+> ### Step 4: git clone in your local workspace
 > ```bash
 > $ git clone [ your-fork-repository-url ]
 > ```
