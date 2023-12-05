@@ -1,4 +1,4 @@
-Spring Microservice In Action<스프링 마이크로서비스 인 액션><br> - Version Up Spring boot 3.1.5
+Spring Microservice In Action [Spring boot 3.1.5]
 ==
 
 Worker: jhcode33
