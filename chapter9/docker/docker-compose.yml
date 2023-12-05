@@ -40,7 +40,7 @@ services:
       database:
         condition: service_healthy
       configserver:
-        condition: service_started  
+        condition: service_started
     networks:
       backend:
         aliases:
@@ -106,20 +106,22 @@ services:
       - backend
 
   keycloak:
-    image: jboss/keycloak:latest
-    na
+    image: keycloak/keycloak:latest
     restart: always
     environment:
-      KEYCLOAK_VERSION: 6.0.1
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_VERSION: 22.0.4
     volumes:
-        - ./realm-export.json:/opt/alemairebe/keycloak/realm-export.json
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+    entrypoint: ["/bin/bash", "-c"]
     command:
-      - "-b 0.0.0.0"
-      - "-Dkeycloak.import=/opt/alemairebe/keycloak/realm-export.json"
-      - "-Dkeycloak.profile.feature.scripts=enabled"
-      - "-Dkeycloak.profile.feature.upload_scripts=enabled"
+      - /opt/keycloak/bin/kc.sh import --dir /opt/keycloak/data/import --override true && /opt/keycloak/bin/kc.sh start-dev
+#      - "start-dev"
+#      - "--import-realm"
+#      - "-Dkeycloak.import=/opt/keycloak/data/import/realm-export.json"  # 수정된 부분
+#      - "-Dkeycloak.profile.feature.scripts=enabled"
+#      - "-Dkeycloak.profile.feature.upload_scripts=enabled"
     ports:
       - "8080:8080"
     networks:

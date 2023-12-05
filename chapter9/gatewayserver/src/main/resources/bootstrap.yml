@@ -4,10 +4,4 @@ spring:
     cloud:
         config: 
             uri: http://configserver:8071
-
-logging:
-  level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.optimagrowth: DEBUG
             

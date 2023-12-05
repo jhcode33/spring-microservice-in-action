@@ -1,42 +1,57 @@
 package com.optimagrowth.license.config;
 
-import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
-import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
-import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
-import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
-import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
-import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import com.optimagrowth.license.jwt.JwtAuthConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
+//@EnableGlobalMethodSecurity(jsr250Enabled = true) => deprecated
 public class SecurityConfig {
 
-	@Autowired
-	public KeycloakClientRequestFactory keycloakClientRequestFactory;
+	public static final String ADMIN = "admin";
+	public static final String USER = "user";
+	private final JwtAuthConverter jwtAuthConverter;
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
 				.csrf(csrf -> csrf.disable())
-				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+				.authorizeHttpRequests(authorize -> authorize
+						.anyRequest().authenticated())
+
+				.oauth2ResourceServer(oauth -> oauth
+						.jwt(jwt -> jwt
+								.jwtAuthenticationConverter(jwtAuthConverter)))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.build();
+	}
+
+	//== CorsWebFilter ==//
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8072"));
+		corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+		corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE", "OPTIONS"));
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
 	}
 
 //	@Override
@@ -54,23 +69,23 @@ public class SecurityConfig {
 //	}
 
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-		keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
-		auth.authenticationProvider(keycloakAuthenticationProvider);
-	}
-
-
-	@Bean
-	public KeycloakConfigResolver KeycloakConfigResolver() {
-		return new KeycloakSpringBootConfigResolver();
-	}
-
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public KeycloakRestTemplate keycloakRestTemplate() {
-		return new KeycloakRestTemplate(keycloakClientRequestFactory);
-	}
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+//		keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+//		auth.authenticationProvider(keycloakAuthenticationProvider);
+//	}
+//
+//
+//	@Bean
+//	public KeycloakConfigResolver KeycloakConfigResolver() {
+//		return new KeycloakSpringBootConfigResolver();
+//	}
+//
+//	@Bean
+//	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//	public KeycloakRestTemplate keycloakRestTemplate() {
+//		return new KeycloakRestTemplate(keycloakClientRequestFactory);
+//	}
 }
 
