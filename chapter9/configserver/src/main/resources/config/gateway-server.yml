@@ -24,6 +24,26 @@ spring:
   cloud:
     loadbalancer.ribbon.enabled: false
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        # 토큰 전파를 위한 필드
+        - TokenRelay=
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8081"
+              - "http://localhost:8080"
+              - "http://localhost:8180"
+            allow-credentials: true
+            allowedHeaders: "*"
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+
       discovery.locator:
         enabled: true
         lowerCaseServiceId: true
